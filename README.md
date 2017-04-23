@@ -1,4 +1,4 @@
-# whether-forecast-test
+# weather-forecast-test
 
 > A Vue.js project
 
