@@ -10,5 +10,5 @@ app.all('/*', (req, res) => {
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
-  window.console.log('Server started at port' + port);  // eselint-disable-line
+  console.log('Server started at port: ' + port);  // eselint-disable-line
 });
