@@ -4,6 +4,7 @@
       <div class="city_name" v-if="whetherData && whetherData.city">{{whetherData.city.name}}</div>
       <a v-bind:href="mapUrl" target="_blank">Show Map</a>
 
+      <!-- two different views -->
       <ul class="nav nav-tabs nav-justified">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 cursor_pointer" :class="{'active_view': viewType === 'graph'}" v-on:click="changeView('graph')">
           Graph View
@@ -12,12 +13,15 @@
           Table View
         </div>
       </ul>
+      <!-- display day -->
       <div>{{temperaturList[0].dt * 1000 | moment('dddd, DD MMM, YYYY')}}</div>
+      <!-- graph view -->
       <div v-if="viewType === 'graph'">
         <div class="graph_section" v-if="dataSet.length > 0">
           <linechart :data="dataSet" :options="{responsive: true, maintainAspectRatio: false}" :labels="graphLabels" :width="500" :height="300"></linechart>
         </div>
       </div>
+      <!-- table view -->
       <div class="pt-10" v-if="viewType === 'table'">
         <table class="table table-bordered">
           <tr>
@@ -38,6 +42,7 @@
           </tr>
         </table>
       </div>
+      <!-- next and prev day -->
       <div class="row pt-20">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 cursor_pointer" v-on:click="prepareData(-1)">
           <i class="fa fa-arrow-left" aria-hidden="true"></i> Prev Day
@@ -51,11 +56,12 @@
 </template>
 
 <script>
+  // import statements to import the required dependencies/modules
   import _ from 'lodash';
-  // import { getWhetherReportApi } from '../../api';
   import urls from '../../api/urls';
   import LineChart from '../graphs/line-graph';
 
+  // exporting the module component
   export default {
     name: 'hello',
     data() {
@@ -76,10 +82,10 @@
         currentIndex: 0,
       };
     },
-    mounted() {
+    mounted() { // which will be one of the life cycle method and will be called before the component renders
       this.getWHetherDetails();
     },
-    methods: {
+    methods: {  // all the methods can be added here
       changeView(view) {
         this.viewType = view;
       },
@@ -91,9 +97,11 @@
             _.forEach(this.whetherData.list, (val) => {
               val.day = this.removeHMS(val.dt);   // eslint-disable-line
             });
+            // grouping the values on day basis
             const groupedValues = _.groupBy(this.whetherData.list, 'day');
             this.temperaturListArr = _.values(groupedValues);
             window.console.log(this.temperaturListArr);
+            // preparing the map url
             this.mapUrl = 'https://www.google.com/maps?q=' + this.whetherData.city.coord.lat + ',' + this.whetherData.city.coord.lon;  // eslint-disable-line
             this.prepareData(0);
           }, (error) => {
@@ -101,6 +109,7 @@
           });
       },
       prepareData(index) {
+        // preparing the set of single day array of objects
         this.graphLabels = [];
         this.currentIndex = this.currentIndex + index;
         if (this.currentIndex === this.temperaturListArr.length) {
@@ -115,7 +124,7 @@
           this.graphLabels.push(new Date(val).getDate() + '-' + (new Date(val).getMonth() + 1) + '-' + new Date(val).getFullYear());  // eslint-disable-line
         });
       },
-      removeHMS(val) {
+      removeHMS(val) {  // removing hours, minutes, seconds and milliseconds to get the exact day
         const tempEpoch = new Date(val * 1000);
         tempEpoch.setHours(0);
         tempEpoch.setMinutes(0);
