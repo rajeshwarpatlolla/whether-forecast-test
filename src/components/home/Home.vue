@@ -82,7 +82,8 @@
         currentIndex: 0,
       };
     },
-    mounted() { // which will be one of the life cycle method and will be called before the component renders
+    mounted() {
+      // which will be one of the life cycle method and will be called before the component renders
       this.getWHetherDetails();
     },
     methods: {  // all the methods can be added here
