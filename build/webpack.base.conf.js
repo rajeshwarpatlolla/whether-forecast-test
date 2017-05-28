@@ -3,13 +3,7 @@ var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
 
-var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap);
-var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap);
-var useCssSourceMap = cssSourceMapDev || cssSourceMapProd;
-var env = process.env.NODE_ENV;
-var apiBaseUrl = process.env.API_BASE_URL;
-
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -20,7 +14,9 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
-    publicPath: env === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
   resolve: {
     extensions: ['.js', '.vue', '.json'],
@@ -65,7 +61,7 @@ module.exports = {
           limit: 10000,
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
-      },
+      }
     ]
   }
 }

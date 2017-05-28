@@ -1,11 +1,14 @@
 import Vue from 'vue';
-import Hello from '../../../src/components/home/Home';
+import Hello from '@/components/Hello';
 
-describe('Home.vue', () => {
-  it('should render correct contents', () => {
+describe('Hello.vue', () => {
+  it('should render correct type', () => {
     const Constructor = Vue.extend(Hello);
     const vm = new Constructor().$mount();
-    expect(vm.$el.querySelector('.hello h1').textContent)
-      .to.equal('Welcome to Your Vue.js App');
+    expect(vm.$el.querySelector('.hello h2').textContent).to.equal('graph');
+  });
+
+  it('should render correct value currentIndex', () => {
+    
   });
 });
